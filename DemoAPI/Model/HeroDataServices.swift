@@ -24,6 +24,45 @@ class HeroDataServices {
         }
     }
     
+    //    func getDataFromAPI() {
+    //        _hero = []
+    //        // tao urlString de lay dia chi api ve
+    //        let urlString = "http://infomationchampion.pe.hu/showInfo.php?index=1&number=20"
+    //        // tao url
+    //        let url = URL(string: urlString)!
+    //        // tao urlRequest
+    //        let urlRequest = URLRequest(url: url)
+    //        // tao task request server de lat data = URLSession (URLSession.shared.dataTask)
+    //        DispatchQueue.global().async {
+    //            let task = URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+    //                // ktra error
+    //                guard error == nil else {
+    //                    print(error!.localizedDescription)
+    //                    return
+    //                }
+    //                // ktra data
+    //                guard let aData = data else { return }
+    //                // decaode data de xem data tra ve thuoc kieu DICT or Array
+    //                do {
+    //                    if let result = try JSONSerialization.jsonObject(with: aData, options: .mutableContainers) as? [DICT] {
+    //                        DispatchQueue.main.async {
+    //                            for heroObject in result {
+    //                                if let hero = Hero(dict: heroObject) {
+    //                                    self._hero?.append(hero)
+    //                                }
+    //                            }
+    //                            NotificationCenter.default.post(name: Notification.Name.init("update"), object: nil)
+    //                        }
+    //                    }
+    //                }
+    //                catch {
+    //                    print(error.localizedDescription)
+    //                }
+    //            })
+    //            task.resume()
+    //        }
+    //    }
+    
     func updateDataFromAPI() {
         _heros = []
         let urlString = "http://infomationchampion.pe.hu/showInfo.php?index=1&number=20"
@@ -58,6 +97,12 @@ class HeroDataServices {
             })
             task.resume()
         }
+    }
+    
+    func getDataFromAPI() {
+        
+        
+        
     }
     
 }
