@@ -19,6 +19,7 @@ class HeroDataServices {
         get {
             if _heros == nil {
                 updateDataFromAPI()
+                
             }
             return _heros ?? []
         }
@@ -63,6 +64,7 @@ class HeroDataServices {
     //        }
     //    }
     
+    
     func updateDataFromAPI() {
         _heros = []
         let urlString = "http://infomationchampion.pe.hu/showInfo.php?index=1&number=20"
@@ -99,10 +101,38 @@ class HeroDataServices {
         }
     }
     
-    func getDataFromAPI() {
-        
-        
-        
+    func getDataFromAPI(complete: @escaping([Hero])->Void) {
+        var heros: [Hero] = []
+        let urlString = "http://infomationchampion.pe.hu/showInfo.php?index=1&number=20"
+        let url = URL(string: urlString)!
+        let urlRequest = URLRequest(url: url)
+        DispatchQueue.global().async {
+            let task = URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                guard let aData = data else {
+                    return
+                }
+                do {
+                    if let results = try JSONSerialization.jsonObject(with: aData, options: .mutableContainers) as? [DICT] {
+                        for heroObject in results {
+                            if let hero = Hero(dict: heroObject) {
+                                heros.append(hero)
+                            }
+                        }
+                        DispatchQueue.main.async {
+                            complete(heros)
+                        }
+                    }
+                }
+                catch {
+                    print(error.localizedDescription)
+                }
+            })
+            task.resume()
+        }
     }
     
 }

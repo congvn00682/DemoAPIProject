@@ -10,15 +10,26 @@ import UIKit
 
 class MasterViewController: UITableViewController {
 
+    var heros: [Hero] = []
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(handler), name: Notification.Name.init("update"), object: nil)
+//        // notification
+//        NotificationCenter.default.addObserver(self, selector: #selector(handler), name: Notification.Name.init("update"), object: nil)
+        
+        // closure
+        HeroDataServices.shared.getDataFromAPI { [unowned self] heros in
+            self.heros = heros
+            self.tableView.reloadData()
+        }
+        
     }
+    
 
-    @objc func handler(){
-        tableView.reloadData()
-    }
+//    // notification
+//    @objc func handler(){
+//        tableView.reloadData()
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -34,13 +45,13 @@ class MasterViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return HeroDataServices.shared.heros.count
+        return heros.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! HeroTableViewCell
-        let hero = HeroDataServices.shared.heros[indexPath.row]
+        let hero = heros[indexPath.row]
         cell.nameEN.text = hero.nameEN_Champ
         cell.nameVN.text = hero.nameVN_Champ
         cell.level.text = hero.level_Champ
